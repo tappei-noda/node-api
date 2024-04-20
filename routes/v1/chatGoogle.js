@@ -79,10 +79,10 @@ module.exports.chatRun = function() {
   }
 
   function authotization(request){
-    const requestBody = request.body.toString()
+    const requestBody = request.body
     const header = request.headers['x-line-signature']
     const hash = crypto.createHmac('sha256', channelSecret)
-                   .update(requestBody)
+                   .update(Buffer.from(JSON.stringify(requestBody)))
                    .digest();
     const signature = hash.toString('base64');
     console.log(header)
