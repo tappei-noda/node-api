@@ -14,7 +14,7 @@ router.post("/",(req, res) =>{
             const url = 'https://api.line.me/v2/bot/message/push'
             const dataString = JSON.stringify({
                 // 応答トークンを定義
-                replyToken: req.body.events[0].replyToken,
+                to: req.body.events[0].replyToken,
                 // 返信するメッセージを定義
                 messages: [
                   {
