@@ -6,19 +6,15 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API);
 let chatLog = []
 let chat = null;
 
-const line_config = {
+/*const line_config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN, // 環境変数からアクセストークンをセットしています
     channelSecret: process.env.LINE_CHANNEL_TOKEN // 環境変数からChannel Secretをセットしています
-};
+};*/
 
-router.post("/",line.middleware(line_config),(req, res) =>{
+router.post("/",(req, res) =>{
     chatStart(req.body.message.text).then((result) =>{
         res.send(result)
     })
-} );
-
-router.get("/",(req, res) =>{
-    console.log("hello")
 } );
 
 module.exports.chatRun = function() {
@@ -35,6 +31,7 @@ module.exports.chatRun = function() {
   async function chatStart(msg){
     const result = await chat.sendMessage(msg);
     const response = await result.response;
+    console.log(response.text())
     return  response.text();
   }
 
