@@ -11,6 +11,7 @@ let chat = null;
 router.post("/",(req, res) =>{
     if(req.body.events[0].type === "message"){
         chatStart(req.body.events[0].message.text).then((result) => {
+            const url = 'https://api.line.me/v2/bot/message/push'
             const dataString = JSON.stringify({
                 // 応答トークンを定義
                 replyToken: req.body.events[0].replyToken,
@@ -22,35 +23,40 @@ router.post("/",(req, res) =>{
                   },
                 ],
               });
-            // リクエストヘッダー。仕様についてはMessaging APIリファレンスを参照してください。
-            const headers = {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + TOKEN,
-            };
-
-            const webhookOptions = {
-                path: "/v2/bot/message/reply",
-                method: "POST",
-                headers: headers,
-                body: dataString,
-            };
-
-            const request = https.request(webhookOptions, (res) => {
-                res.on("data", (d) => {
-                  process.stdout.write(d);
+              const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': TOKEN
+              };
+              
+              // リクエストオプション
+              const options = {
+                method: 'POST',
+                headers: headers
+              };
+              
+              // HTTPSリクエストを作成
+              const req = https.request(url, options, (res) => {
+                console.log('Status Code:', res.statusCode);
+              
+                let responseBody = '';
+                res.on('data', (chunk) => {
+                  responseBody += chunk;
+                });
+              
+                res.on('end', () => {
+                  console.log('Response Body:', responseBody);
                 });
               });
-          
-              // エラーをハンドリング
-              // request.onは、APIサーバーへのリクエスト送信時に
-              // エラーが発生した場合にコールバックされる関数です。
-              request.on("error", (err) => {
-                console.error(err);
+              
+              req.on('error', (e) => {
+                console.error('Error:', e);
               });
-          
-              // 最後に、定義したリクエストを送信
-              request.write(dataString);
-              request.end();
+              
+              // リクエストボディをリクエストに書き込み
+              req.write(dataString);
+              
+              // リクエストを完了
+              req.end();
         })
     }
 } );
