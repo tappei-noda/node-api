@@ -25,7 +25,7 @@ router.post("/",(req, res) =>{
               });
               const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': TOKEN
+                'Authorization': "Bearer " + TOKEN
               };
               
               // リクエストオプション
