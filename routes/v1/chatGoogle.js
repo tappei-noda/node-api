@@ -12,9 +12,10 @@ let chat = null;
 };*/
 
 router.post("/",(req, res) =>{
-    chatStart(req.body.message.text).then((result) =>{
+    /*chatStart(req.body.message.text).then((result) =>{
         res.send(result)
-    })
+    })*/
+    res.send("hello")
 } );
 
 module.exports.chatRun = function() {
