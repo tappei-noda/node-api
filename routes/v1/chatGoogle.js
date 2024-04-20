@@ -4,6 +4,7 @@ const line = require("@line/bot-sdk");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API);
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
+const TO = process.env.LINE_CHANNEL_TOKEN
 
 let chatLog = []
 let chat = null;
@@ -14,7 +15,8 @@ router.post("/",(req, res) =>{
             const url = 'https://api.line.me/v2/bot/message/push'
             const dataString = JSON.stringify({
                 // 応答トークンを定義
-                to: req.body.events[0].replyToken,
+                replyToken: req.body.events[0].replyToken,
+                to: TO,
                 // 返信するメッセージを定義
                 messages: [
                   {
