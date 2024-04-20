@@ -1,16 +1,18 @@
 const router  = require("express").Router();
 const https = require('https');
-const line = require("@line/bot-sdk");
+const crypto = require('crypto');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API);
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
-const TO = process.env.LINE_CHANNEL_TOKEN
+const TO = process.env.LINE_CHANNEL_TOKEN;
+const channelSecret = process.env.LINE_SERCRET_TOKEN; // Channel secret string
 
 let chatLog = []
 let chat = null;
 
 router.post("/",(req, res) =>{
-    if(req.body.events[0].type === "message"){
+    if(authotization(req)){
+      if(req.body.events[0].type === "message"){
         chatStart(req.body.events[0].message.text).then((result) => {
             const url = 'https://api.line.me/v2/bot/message/push'
             const dataString = JSON.stringify({
@@ -59,6 +61,9 @@ router.post("/",(req, res) =>{
               // リクエストを完了
               request.end();
         })
+      }
+    }else{
+      console.log("Error access")
     }
 } );
 
@@ -71,6 +76,23 @@ module.exports.chatRun = function() {
             maxOutputTokens: 100,
         },
     });
+  }
+
+  function authotization(request){
+    const requestBody = request.body
+    const header = request.headers['x-line-signature']
+    const hash = crypto.createHmac('sha256', channelSecret)
+                   .update(requestBody)
+                   .digest();
+    const signature = hash.toString('base64');
+    console.log(hash)
+    console.log(signature)
+    if(header === signature){
+        return true
+    }else{
+      return false
+    }
+
   }
 
   async function chatStart(msg){
