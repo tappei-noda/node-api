@@ -2,18 +2,56 @@ const router  = require("express").Router();
 const line = require("@line/bot-sdk");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API);
+const TOKEN = process.env.LINE_ACCESS_TOKEN;
 
 let chatLog = []
 let chat = null;
 
-const line_config = {// 環境変数からアクセストークンをセットしています
-    channelSecret: process.env.LINE_CHANNEL_TOKEN // 環境変数からChannel Secretをセットしています
-};
+router.post("/",(req, res) =>{
+    if(req.body.events[0].type === "message"){
+        chatStart(req.body.events[0].messages.text).then((result) => {
+            const dataString = JSON.stringify({
+                // 応答トークンを定義
+                replyToken: req.body.events[0].replyToken,
+                // 返信するメッセージを定義
+                messages: [
+                  {
+                    type: "text",
+                    text: result,
+                  },
+                ],
+              });
+            // リクエストヘッダー。仕様についてはMessaging APIリファレンスを参照してください。
+            const headers = {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + TOKEN,
+            };
 
-router.post("/",line.middleware(line_config),(req, res) =>{
-    /*chatStart(req.body.message.text).then((result) =>{
-        res.send(result)
-    })*/
+            const webhookOptions = {
+                path: "/v2/bot/message/reply",
+                method: "POST",
+                headers: headers,
+                body: dataString,
+            };
+
+            const request = https.request(webhookOptions, (res) => {
+                res.on("data", (d) => {
+                  process.stdout.write(d);
+                });
+              });
+          
+              // エラーをハンドリング
+              // request.onは、APIサーバーへのリクエスト送信時に
+              // エラーが発生した場合にコールバックされる関数です。
+              request.on("error", (err) => {
+                console.error(err);
+              });
+          
+              // 最後に、定義したリクエストを送信
+              request.write(dataString);
+              request.end();
+        })
+    }
 } );
 
 module.exports.chatRun = function() {
