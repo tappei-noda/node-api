@@ -85,7 +85,7 @@ module.exports.chatRun = function() {
                    .update(requestBody)
                    .digest();
     const signature = hash.toString('base64');
-    console.log(hash)
+    console.log(header)
     console.log(signature)
     if(header === signature){
         return true
