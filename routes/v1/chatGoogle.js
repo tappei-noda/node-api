@@ -10,7 +10,6 @@ let chat = null;
 
 router.post("/",(req, res) =>{
     if(req.body.events[0].type === "message"){
-        console.log(TOKEN)
         chatStart(req.body.events[0].message.text).then((result) => {
             const url = 'https://api.line.me/v2/bot/message/push'
             const dataString = JSON.stringify({
