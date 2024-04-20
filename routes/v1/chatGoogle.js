@@ -10,7 +10,7 @@ let chat = null;
 
 router.post("/",(req, res) =>{
     if(req.body.events[0].type === "message"){
-        chatStart(req.body.events[0].messages.text).then((result) => {
+        chatStart(req.body.events[0].message.text).then((result) => {
             const dataString = JSON.stringify({
                 // 応答トークンを定義
                 replyToken: req.body.events[0].replyToken,
