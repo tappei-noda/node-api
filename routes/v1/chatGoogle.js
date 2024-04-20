@@ -35,7 +35,7 @@ router.post("/",(req, res) =>{
               };
               
               // HTTPSリクエストを作成
-              const req = https.request(url, options, (res) => {
+              const request = https.request(url, options, (res) => {
                 console.log('Status Code:', res.statusCode);
               
                 let responseBody = '';
@@ -48,14 +48,14 @@ router.post("/",(req, res) =>{
                 });
               });
               
-              req.on('error', (e) => {
+              request.on('error', (e) => {
                 console.error('Error:', e);
               });
               
               // リクエストボディをリクエストに書き込み
-              req.write(dataString);
+              request.write(dataString);
               // リクエストを完了
-              req.end();
+              request.end();
         })
     }
 } );
