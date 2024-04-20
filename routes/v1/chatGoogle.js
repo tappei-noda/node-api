@@ -1,4 +1,5 @@
 const router  = require("express").Router();
+const https = require('https');
 const line = require("@line/bot-sdk");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API);
