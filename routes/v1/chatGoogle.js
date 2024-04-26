@@ -96,8 +96,11 @@ module.exports.chatRun = function() {
   async function chatStart(msg){
     const result = await chat.sendMessage(msg);
     const response = await result.response;
-    console.log(response.text())
-    return  response.text();
+    if(response.text() == ''){
+      return "その質問にはお答えできません。。。" 
+    }else{
+      return response.text();
+    }
   }
 
 module.exports.chatRouter = router;
