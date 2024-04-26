@@ -9,6 +9,7 @@ const channelSecret = process.env.LINE_SERCRET_TOKEN; // Channel secret string
 
 let chatLog = []
 let chat = null;
+const model = null;
 
 router.post("/",(req, res) =>{
     if(authotization(req)){
@@ -69,7 +70,7 @@ router.post("/",(req, res) =>{
 
 module.exports.chatRun = function() {
     // For text-only input, use the gemini-pro model
-    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    model = genAI.getGenerativeModel({ model: "gemini-pro"});
     chat = model.startChat({
         history: chatLog,
         generationConfig: {
@@ -97,7 +98,7 @@ module.exports.chatRun = function() {
     const result = await chat.sendMessage(msg);
     const response = await result.response;
     if(response.text() == ''){
-      chat = model.startChat({
+        chat = model.startChat({
         history: chatLog,
         generationConfig: {
             maxOutputTokens: 100,
