@@ -97,6 +97,12 @@ module.exports.chatRun = function() {
     const result = await chat.sendMessage(msg);
     const response = await result.response;
     if(response.text() == ''){
+      chat = model.startChat({
+        history: chatLog,
+        generationConfig: {
+            maxOutputTokens: 100,
+        },
+    });
       return "その質問にはお答えできません。。。" 
     }else{
       return response.text();
