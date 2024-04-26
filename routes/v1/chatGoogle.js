@@ -9,7 +9,7 @@ const channelSecret = process.env.LINE_SERCRET_TOKEN; // Channel secret string
 
 let chatLog = []
 let chat = null;
-const model = null;
+let model = null;
 
 router.post("/",(req, res) =>{
     if(authotization(req)){
