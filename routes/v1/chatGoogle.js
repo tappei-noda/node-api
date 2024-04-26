@@ -98,6 +98,7 @@ module.exports.chatRun = function() {
     const result = await chat.sendMessage(msg);
     const response = await result.response;
     if(response.text() == ''){
+        model = genAI.getGenerativeModel({ model: "gemini-pro"});
         chat = model.startChat({
         history: chatLog,
         generationConfig: {
