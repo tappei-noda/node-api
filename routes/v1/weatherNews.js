@@ -12,7 +12,7 @@ router.get("/",(req, res) =>{
 } );
 
 async function getTodayWeather(){
-    let weatherInformation = {date:"",locate:"",weather:"",tempertureMax:"",description:""}//日付、場所、天気、最高気温、説明
+    let weatherInformation = {date:"",locate:"",weather:"",tempertureMax:"",description:"",chanceOfRain:""}//日付、場所、天気、最高気温、説明
     try{
         const weather = await axios({
             method: 'get',
@@ -22,8 +22,9 @@ async function getTodayWeather(){
         weatherInformation.date = weather.data.forecasts[0].date
         weatherInformation.locate = weather.data.title
         weatherInformation.weather = weather.data.forecasts[0].telop
-        weatherInformation.tempertureMax = weather.data.forecasts[1].temperature.max.celsius
+        weatherInformation.tempertureMax = weather.data.forecasts[0].temperature.max.celsius
         weatherInformation.description = weather.data.description.text
+        weatherInformation.chanceOfRain = weather.data.forecasts[0].chanceOfRain
         console.log(weatherInformation)
     }catch(err){
         console.log(err)
