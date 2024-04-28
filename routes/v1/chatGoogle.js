@@ -79,6 +79,17 @@ module.exports.chatRun = function() {
     });
   }
 
+  function start() {
+    // For text-only input, use the gemini-pro model
+    model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    chat = model.startChat({
+        history: chatLog,
+        generationConfig: {
+            maxOutputTokens: 100,
+        },
+    });
+  }
+
   function authotization(request){
     const requestBody = request.body
     const header = request.headers['x-line-signature']
@@ -99,13 +110,13 @@ module.exports.chatRun = function() {
       const result = await chat.sendMessage(msg);
       const response = await result.response;
       if(response.text() === ""){
-        chatRun()
+        start()
         return "その質問にはお答えできません。。。" 
       }
       return response.text();
     } catch (error) {
         console.log(error)
-        chatRun()
+        start()
         return "その質問にはお答えできません。。。" 
     }
   }
