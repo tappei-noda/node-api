@@ -99,11 +99,13 @@ module.exports.chatRun = function() {
       const result = await chat.sendMessage(msg);
       const response = await result.response;
       if(response.text() === ""){
+        chatRun()
         return "その質問にはお答えできません。。。" 
       }
       return response.text();
     } catch (error) {
         console.log(error)
+        chatRun()
         return "その質問にはお答えできません。。。" 
     }
   }
