@@ -9,7 +9,7 @@ const version = "/v1"
 
 app.use(express.json());
 app.listen(PORT,() => console.log("servier is up"));
-googleChat.chatRun()
+//googleChat.chatRun()
 app.use(version + "/friDayMovie" , fryiDayMovie);
 app.use(version + "/weatherNews" , weatherNews);
 app.use(version + "/chatGoogle" , googleChat.chatRouter);

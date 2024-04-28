@@ -68,6 +68,7 @@ router.post("/",(req, res) =>{
     }
 } );
 
+/*
 module.exports.chatRun = function() {
     // For text-only input, use the gemini-pro model
     model = genAI.getGenerativeModel({ model: "gemini-pro"});
@@ -77,9 +78,9 @@ module.exports.chatRun = function() {
             maxOutputTokens: 100,
         },
     });
-  }
-
-  function start() {
+  }*/
+/*
+  function restart() {
     // For text-only input, use the gemini-pro model
     model = genAI.getGenerativeModel({ model: "gemini-pro"});
     chat = model.startChat({
@@ -88,7 +89,7 @@ module.exports.chatRun = function() {
             maxOutputTokens: 100,
         },
     });
-  }
+  }*/
 
   function authotization(request){
     const requestBody = request.body
@@ -107,16 +108,15 @@ module.exports.chatRun = function() {
 
   async function chatStart(msg){
     try {
-      const result = await chat.sendMessage(msg);
+      model = genAI.getGenerativeModel({ model: "gemini-pro"});
+      const result = await model.generateContent(msg);
       const response = await result.response;
       if(response.text() === ""){
-        start()
         return "その質問にはお答えできません。。。" 
       }
       return response.text();
     } catch (error) {
         console.log(error)
-        start()
         return "その質問にはお答えできません。。。" 
     }
   }
