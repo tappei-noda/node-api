@@ -24,13 +24,13 @@ function checkBroadcastDate(dateString,titleString) {
     const broadcastDate = dateString.split('放送')[0]; // 日付部分を取得する
     // 今日の日付を取得する
     const today = new Date();
-    const todayFormatted = today.getFullYear() + '.' + (today.getMonth() + 1) + '.' + today.getDate();
+    const todayFormatted = today.getFullYear() + '.' + (today.getMonth() + 1) + '.' + (today.getDate() + 1);
     //const todayFormatted = "2024.4.26"
     // 今日の日付と比較する
     if (broadcastDate === todayFormatted) {
         return {date:broadcastDate, title:titleString}; // 日付が一致する場合
     } else {
-        return {date:todayFormatted, title:broadcastDate}; // 日付が一致しない場合
+        return {date:todayFormatted, title:"お休み"}; // 日付が一致しない場合
     }
 }
 
