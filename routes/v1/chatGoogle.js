@@ -108,7 +108,8 @@ module.exports.chatRun = function() {
 
   async function chatStart(msg){
     try {
-      model = genAI.getGenerativeModel({ model: "gemini-pro"});
+      //model = genAI.getGenerativeModel({ model: "gemini-pro"});
+      model = genAI.getGenerativeModel({ model: "gemini-2.0-flash"});
       const result = await model.generateContent(msg);
       const response = await result.response;
       if(response.text() === ""){
@@ -122,3 +123,4 @@ module.exports.chatRun = function() {
   }
 
 module.exports.chatRouter = router;
+module.exports.chatStart = chatStart
